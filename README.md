@@ -42,14 +42,32 @@ python3 -m http.server 8000
 
 ## Publishing it on GitHub Pages
 
-1. Push this repository to GitHub.
-2. Go to **Settings → Pages**.
-3. Under **Build and deployment**, set **Source** to *Deploy from a branch*.
-4. Choose the branch and the `/ (root)` folder, then **Save**.
-5. After a minute the site is live at `https://<your-username>.github.io/<repo-name>/`.
+**Pages has to be switched on once, by hand.** GitHub does not allow the Actions token to create a
+Pages site for the first time, so this cannot be automated — the workflow fails with
+`Create Pages site failed: Resource not accessible by integration` until it is done. After this
+one-time step, every push to `main` deploys automatically.
 
-The `.nojekyll` file is there to stop GitHub's Jekyll processor interfering with the `assets/`
-directory. Leave it in place.
+Go to **Settings → Pages**, and under **Build and deployment** set **Source** to **GitHub Actions**.
+That is the only change needed.
+
+Then either push to `main`, or re-run the most recent *Deploy to GitHub Pages* run from the
+**Actions** tab. The site appears at:
+
+```
+https://<your-username>.github.io/<repo-name>/
+```
+
+<details>
+<summary>Alternative: serve straight from a branch, without the workflow</summary>
+
+Set **Source** to *Deploy from a branch*, pick `main` and the `/ (root)` folder, and save. This
+works just as well for a site with no build step. If you choose this, delete
+`.github/workflows/pages.yml`, otherwise it will keep failing on every push and clutter the Actions
+tab with red crosses.
+</details>
+
+The `.nojekyll` file stops GitHub's Jekyll processor interfering with the `assets/` directory. Leave
+it in place.
 
 ## Keeping it accurate
 
